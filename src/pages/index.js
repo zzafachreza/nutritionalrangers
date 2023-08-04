@@ -16,6 +16,9 @@ import InfoYT from './InfoYT';
 import MenuA1 from './MenuA1';
 import MenuA2 from './MenuA2';
 import MenuA3 from './MenuA3';
+import MenuA2Add from './MenuA2Add';
+import MenuA3Add from './MenuA3Add';
+import InfoGrafik from './InfoGrafik';
 
 
 export {
@@ -34,9 +37,12 @@ export {
   Riwayat,
   Informasi,
   InfoYT,
+  InfoGrafik,
   MenuA1,
   MenuA2,
-  MenuA3
+  MenuA3,
+  MenuA2Add,
+  MenuA3Add
 
 
 

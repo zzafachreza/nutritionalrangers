@@ -20,6 +20,9 @@ import {
   MenuA1,
   MenuA2,
   MenuA3,
+  MenuA2Add,
+  MenuA3Add,
+  InfoGrafik,
 
 
 
@@ -199,8 +202,33 @@ export default function Router() {
       />
 
       <Stack.Screen
+        name="MenuA2Add"
+        component={MenuA2Add}
+        options={{
+          headerShown: false,
+
+        }}
+      />
+
+      <Stack.Screen
         name="MenuA3"
         component={MenuA3}
+        options={{
+          headerShown: false,
+
+        }}
+      />
+      <Stack.Screen
+        name="InfoGrafik"
+        component={InfoGrafik}
+        options={{
+          headerShown: false,
+
+        }}
+      />
+      <Stack.Screen
+        name="MenuA3Add"
+        component={MenuA3Add}
         options={{
           headerShown: false,
 

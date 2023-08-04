@@ -17,6 +17,7 @@ export default function MyCalendar({
   placeholder,
   label2,
   styleLabel,
+  textColor = colors.primary,
   colorIcon = colors.primary,
   data = [],
 }) {
@@ -28,11 +29,11 @@ export default function MyCalendar({
           alignItems: 'center',
           paddingVertical: 0,
         }}>
-        <Icon type="ionicon" name={iconname} color={colors.primary} size={16} />
+        <Icon type="ionicon" name={iconname} color={colorIcon} size={16} />
         <Text
           style={{
             fontFamily: fonts.secondary[600],
-            color: colors.primary,
+            color: textColor,
             left: 10,
             fontSize: 12,
             ...styleLabel,

@@ -13,63 +13,47 @@ import moment from 'moment';
 import 'moment/locale/id';
 import MyCarouser from '../../components/MyCarouser';
 import { MyButton, MyCalendar, MyGap, MyHeader, MyInput } from '../../components';
+import { showMessage } from 'react-native-flash-message';
 
-export default function MenuA1({ navigation, route }) {
+export default function MenuA3Add({ navigation, route }) {
 
-    const isFocus = useIsFocused();
+    const [kirim, setKirim] = useState({
+        tanggal: moment().format('YYYY-MM-DD'),
+        berat_badan: ''
+    })
+    const [loading, setLoading] = useState(false);
+
+
+
+
+
+    const sendServer = () => {
+        setLoading(true);
+
+        setTimeout(() => {
+            setLoading(false);
+            axios.post(apiURL + 'mingguan_add', kirim).then(res => {
+                console.log(res.data);
+                if (res.data == 200) {
+                    showMessage({
+                        type: 'success',
+                        message: 'Berhasil di simpan !'
+                    })
+                    navigation.goBack();
+                }
+            })
+        }, 1000)
+
+    }
 
     useEffect(() => {
-
-        if (isFocus) {
-
-        }
-    }, isFocus);
-
-    const [data, setData] = useState([
-
-        {
-            icon: require('../../assets/A5.png'),
-            judul: 'Asupan Makan Harian',
-            tujuan: 'MenuA2'
-        },
-        {
-            icon: require('../../assets/A6.png'),
-            judul: 'Berat Badan Mingguan',
-            tujuan: 'MenuA3'
-        },
-        {
-            icon: require('../../assets/A7.png'),
-            judul: 'Grafik Berat Badan',
-            tujuan: 'InfoGrafik'
-        }
-    ]);
-
-    const __renderItem = ({ item }) => {
-        return (
-            <TouchableOpacity onPress={() => navigation.navigate(item.tujuan, item)} style={{
-                padding: 10,
-                borderRadius: 10,
-                margin: 10,
-                height: 80,
-                backgroundColor: colors.primary,
-                flexDirection: 'row', alignItems: 'center'
-            }}>
-                <Image style={{
-                    width: 40,
-                    height: 40,
-                    resizeMode: 'contain'
-                }} source={item.icon} />
-                <Text style={{
-                    left: 10,
-                    fontFamily: fonts.secondary[600],
-                    fontSize: 20,
-                    color: colors.white,
-                    flex: 1,
-                }}>{item.judul}</Text>
-                <Icon type='ionicon' name='chevron-forward' size={20} color={colors.white} />
-            </TouchableOpacity>
-        )
-    }
+        getData('user').then(u => {
+            setKirim({
+                ...kirim,
+                fid_user: u.id
+            })
+        })
+    }, [])
 
 
 
@@ -102,12 +86,23 @@ export default function MenuA1({ navigation, route }) {
                 }}>{route.params.judul}</Text>
 
             </View>
-            <View style={{
-                flex: 1,
-                padding: 10,
+            <ScrollView style={{
+                padding: 20
             }}>
-                <FlatList showsVerticalScrollIndicator={false} data={data} renderItem={__renderItem} />
-            </View>
+                <MyCalendar value={kirim.tanggal} onDateChange={x => setKirim({
+                    ...kirim,
+                    tanggal: x
+                })} label="Tanggal" iconname="calendar" textColor={colors.secondary} colorIcon={colors.secondary} />
+                <MyGap jarak={20} />
+                <MyInput label="Berat Badan" textColor={colors.secondary} colorIcon={colors.secondary} value={kirim.berat_badan} onChangeText={x => setKirim({
+                    ...kirim,
+                    berat_badan: x
+                })} iconname="speedometer" keyboardType='number-pad' placeholder="Masukan berat badan" />
+                <MyGap jarak={20} />
+                {!loading && <MyButton onPress={sendServer} colorText={colors.black} iconColor={colors.black} warna={colors.secondary} title="Simpan" Icons="save" />}
+                {loading && <ActivityIndicator size="large" color={colors.secondary} />}
+            </ScrollView>
+
         </SafeAreaView>
     )
 }

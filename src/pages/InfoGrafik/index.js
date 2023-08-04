@@ -1,11 +1,11 @@
 import { Alert, StyleSheet, Text, View, Image, FlatList, ActivityIndicator, Dimensions, ImageBackground, TouchableWithoutFeedback, TouchableNativeFeedback, Linking } from 'react-native'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { apiURL, getData, MYAPP, storeData } from '../../utils/localStorage';
 import { colors, fonts, windowHeight, windowWidth } from '../../utils';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
@@ -13,66 +13,52 @@ import moment from 'moment';
 import 'moment/locale/id';
 import MyCarouser from '../../components/MyCarouser';
 import { MyButton, MyCalendar, MyGap, MyHeader, MyInput } from '../../components';
+import { showMessage } from 'react-native-flash-message';
+import { WebView } from 'react-native-webview';
+export default function InfoGrafik({ navigation, route }) {
 
-export default function MenuA1({ navigation, route }) {
 
-    const isFocus = useIsFocused();
 
-    useEffect(() => {
 
-        if (isFocus) {
+    useFocusEffect(
+        useCallback(() => {
+            const unsubscribe = __getTransaction()
+            return () => unsubscribe;
+        }, [data])
+    );
 
-        }
-    }, isFocus);
+
+
+
 
     const [data, setData] = useState([
+        // { x: 1691193600000, y: 64 },
+        // { x: 1690588800000, y: 67 },
+        // { x: 1689984000000, y: 53 },
+        // { x: 1689379200000, y: 53 },
+        // { x: 1688774400000, y: 56 },
+        // { x: 1688169600000, y: 50 },
 
-        {
-            icon: require('../../assets/A5.png'),
-            judul: 'Asupan Makan Harian',
-            tujuan: 'MenuA2'
-        },
-        {
-            icon: require('../../assets/A6.png'),
-            judul: 'Berat Badan Mingguan',
-            tujuan: 'MenuA3'
-        },
-        {
-            icon: require('../../assets/A7.png'),
-            judul: 'Grafik Berat Badan',
-            tujuan: 'InfoGrafik'
-        }
+        { x: moment('2023-07-08').valueOf(), y: 78, },
+        { x: moment('2023-07-15').valueOf(), y: 80 },
+        { x: moment('2023-07-22').valueOf(), y: 200 },
+        { x: moment('2023-07-29').valueOf(), y: 120 }
+
     ]);
 
-    const __renderItem = ({ item }) => {
-        return (
-            <TouchableOpacity onPress={() => navigation.navigate(item.tujuan, item)} style={{
-                padding: 10,
-                borderRadius: 10,
-                margin: 10,
-                height: 80,
-                backgroundColor: colors.primary,
-                flexDirection: 'row', alignItems: 'center'
-            }}>
-                <Image style={{
-                    width: 40,
-                    height: 40,
-                    resizeMode: 'contain'
-                }} source={item.icon} />
-                <Text style={{
-                    left: 10,
-                    fontFamily: fonts.secondary[600],
-                    fontSize: 20,
-                    color: colors.white,
-                    flex: 1,
-                }}>{item.judul}</Text>
-                <Icon type='ionicon' name='chevron-forward' size={20} color={colors.white} />
-            </TouchableOpacity>
-        )
+    const [link, setLink] = useState('');
+    const __getTransaction = () => {
+
+
+        getData('user').then(u => {
+            setLink(`https://nutritionalrangers.okeadmin.com/api/mingguan_grafik?fid_user=${u.id}&lebar=${windowWidth}&tinggi=${windowHeight}`)
+        })
+
+
     }
 
 
-
+    const [loading, setLoading] = useState(true);
     return (
         <SafeAreaView style={{
             flex: 1,
@@ -102,12 +88,17 @@ export default function MenuA1({ navigation, route }) {
                 }}>{route.params.judul}</Text>
 
             </View>
-            <View style={{
+
+            <WebView onLoad={() => setLoading(false)} source={{ uri: link }} style={{ flex: 1 }} />
+
+            {loading && <View style={{
                 flex: 1,
-                padding: 10,
+                justifyContent: 'center',
+                alignItems: 'center'
             }}>
-                <FlatList showsVerticalScrollIndicator={false} data={data} renderItem={__renderItem} />
-            </View>
+                <ActivityIndicator color={colors.primary} size="large" />
+            </View>}
+
         </SafeAreaView>
     )
 }

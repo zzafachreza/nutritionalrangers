@@ -103,7 +103,7 @@ export default function Home({ navigation, route }) {
           <View style={{
             flexDirection: 'row'
           }}>
-            <TouchableNativeFeedback onPress={() => navigation.navigate('Materi', {
+            <TouchableNativeFeedback onPress={() => navigation.navigate('MenuA1', {
               judul: 'Screening Status Gizi',
               kategori: 'Tanaman'
             })}>
