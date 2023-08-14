@@ -19,7 +19,12 @@ export default function MenuA2Add({ navigation, route }) {
 
     const [kirim, setKirim] = useState({
         tanggal: moment().format('YYYY-MM-DD'),
-        deskripsi: ''
+        makan_pagi: '',
+        makan_siang: '',
+        makan_malam: '',
+        kudapan: '',
+        masalah_makan: '',
+        masalah_kesehatan: '',
     })
     const [loading, setLoading] = useState(false);
 
@@ -94,10 +99,43 @@ export default function MenuA2Add({ navigation, route }) {
                     tanggal: x
                 })} label="Tanggal" iconname="calendar" />
                 <MyGap jarak={20} />
-                <MyInput label="Deskripsi" value={kirim.deskripsi} onChangeText={x => setKirim({
-                    ...kirim,
-                    deskripsi: x
-                })} iconname="create" multiline placeholder="Masukan deskripsi" />
+
+                <MyInput label="Makan Pagi" value={kirim.makan_pagi} onChangeText={x => {
+                    setKirim({
+                        ...kirim,
+                        makan_pagi: x
+                    })
+                }} multiline iconname="create" />
+                <MyInput label="Makan Siang" value={kirim.makan_siang} onChangeText={x => {
+                    setKirim({
+                        ...kirim,
+                        makan_siang: x
+                    })
+                }} multiline iconname="create" />
+                <MyInput label="Makan Malam" value={kirim.makan_malam} onChangeText={x => {
+                    setKirim({
+                        ...kirim,
+                        makan_malam: x
+                    })
+                }} multiline iconname="create" />
+                <MyInput label="Kudapan" value={kirim.kudapan} onChangeText={x => {
+                    setKirim({
+                        ...kirim,
+                        kudapan: x
+                    })
+                }} multiline iconname="create" />
+                <MyInput label="Masalah Saat Pemberian Makan" value={kirim.masalah_makan} onChangeText={x => {
+                    setKirim({
+                        ...kirim,
+                        masalah_makan: x
+                    })
+                }} multiline iconname="create" />
+                <MyInput label="Masalah Kesehatan anak" value={kirim.masalah_kesehatan} onChangeText={x => {
+                    setKirim({
+                        ...kirim,
+                        masalah_kesehatan: x
+                    })
+                }} multiline iconname="create" />
                 <MyGap jarak={20} />
                 {!loading && <MyButton onPress={sendServer} title="Simpan" Icons="save" />}
                 {loading && <ActivityIndicator size="large" color={colors.primary} />}

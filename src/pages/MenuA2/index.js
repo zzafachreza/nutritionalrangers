@@ -29,7 +29,26 @@ export default function MenuA2({ navigation, route }) {
 
 
 
+    const ListInfo = ({ label, value }) => {
+        return (
+            <View style={{
+                marginBottom: 2,
+            }}>
+                <Text style={{
+                    fontFamily: fonts.secondary[800],
+                    color: colors.white,
+                    fontSize: 12,
+                }}>{label}</Text>
+                <Text style={{
+                    fontFamily: fonts.secondary[400],
+                    color: colors.white,
+                    fontSize: 12,
+                }}>{value}</Text>
 
+
+            </View>
+        )
+    }
 
     const [data, setData] = useState([]);
 
@@ -50,13 +69,16 @@ export default function MenuA2({ navigation, route }) {
                     <Text style={{
                         fontFamily: fonts.secondary[600],
                         fontSize: 15,
+                        marginBottom: 10,
                         color: colors.white,
                     }}>{moment(item.tanggal).format('dddd, DD MMMM YYYY')}</Text>
-                    <Text style={{
-                        fontFamily: fonts.secondary[400],
-                        fontSize: 14,
-                        color: colors.white,
-                    }}>{item.deskripsi}</Text>
+
+                    <ListInfo label="Makan Pagi" value={item.makan_pagi} />
+                    <ListInfo label="Makan Siang" value={item.makan_siang} />
+                    <ListInfo label="Makan Malam" value={item.makan_malam} />
+                    <ListInfo label="Kudapan" value={item.kudapan} />
+                    <ListInfo label="Masalah Saat Pemberian Makan" value={item.masalah_makan} />
+                    <ListInfo label="Masalah Kesehatan anak" value={item.masalah_kesehatan} />
                 </View>
                 <TouchableOpacity onPress={() => {
                     Alert.alert(MYAPP, 'Apakah kamu mau hapus ini ?', [
